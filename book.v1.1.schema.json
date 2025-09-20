@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "book.v1.1",
+  "type": "object",
+  "properties": {
+    "メタデータ": {
+      "type": "object",
+      "properties": {
+        "スキーマ": { "type": "string", "const": "book.v1.1" },
+        "タイトル": { "type": "string" },
+        "言語": { "type": "string" },
+        "版": { "type": "integer" }
+      },
+      "required": ["スキーマ", "タイトル"]
+    },
+    "本文": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/章" }
+    }
+  },
+  "required": ["メタデータ", "本文"],
+  "$defs": {
+    "章": {
+      "type": "object",
+      "properties": {
+        "章番号": { "type": "integer" },
+        "章タイトル": { "type": "string" },
+        "一行結論": { "type": "string" },
+        "概要説明": { "type": "string" },
+        "節": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/節" }
+        },
+        "註釈": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/註釈" }
+        }
+      },
+      "required": ["章番号", "章タイトル"]
+    },
+    "節": {
+      "type": "object",
+      "properties": {
+        "節番号": { "type": "integer" },
+        "節タイトル": { "type": "string" },
+        "一行結論": { "type": "string" },
+        "概要説明": { "type": "string" },
+        "項": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/項" }
+        }
+      },
+      "required": ["節番号", "節タイトル"]
+    },
+    "項": {
+      "type": "object",
+      "properties": {
+        "項番号": { "type": "integer" },
+        "項タイトル": { "type": "string" },
+        "一行結論": { "type": "string" },
+        "概要説明": { "type": "string" },
+        "本文": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/ブロック" }
+        }
+      },
+      "required": ["項番号", "項タイトル"]
+    },
+    "ブロック": {
+      "type": "object",
+      "properties": {
+        "種類": { "type": "string", "enum": ["段落", "数式"] },
+        "本文": { "type": "string" },
+        "テキスト": { "type": "string" },
+        "ラベル": { "type": "string" }
+      }
+    },
+    "註釈": {
+      "type": "object",
+      "properties": {
+        "注識別子": { "type": "string" },
+        "タイトル": { "type": "string" },
+        "本文": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/ブロック" }
+        }
+      },
+      "required": ["注識別子", "タイトル"]
+    }
+  }
+}
